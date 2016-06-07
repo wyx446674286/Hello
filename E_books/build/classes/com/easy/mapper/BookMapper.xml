@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mybatis的dtd文档(快捷提示) -->
+<!-- 1.namespace代表的是命名空间(映射接口) -->
+<mapper namespace="com.easy.mapper.BookMapper">
+		<!-- 原生开发的jdbc给占位符（？）赋值的过程没有了，取而代之的是#{} -->
+		<!-- (1)id属性代表的是映射接口里方法的名字 
+				(2)parameterType属性	输入参数类型：引用类型一定要写全类名
+		-->
+		<insert id="add" parameterType="com.easy.model.Book">
+		insert into book values(book_seq.nextval,#{bookname},#{author},#{press},to_date(#{presdate},'yyyy-mm-dd'))
+		</insert>
+		<select id="selectAll" resultType="com.easy.model.Book">
+		select id,bookname,author,press,to_char(presdate,'yyyy-mm-dd') presdate from book
+		</select>
+		<select id="selectById" resultType="com.easy.model.Book">
+		select id,bookname,author,press,to_char(presdate,'yyyy-mm-dd') presdate from book where id = #{id}
+		</select>
+		<update id="update" parameterType="com.easy.model.Book">
+		update book set bookname = #{bookname},author =#{author},press = #{press},presdate=to_date(#{presdate},'yyyy-mm-dd')  where id = #{id}
+		</update>
+		<delete id="delete" parameterType="int">
+		delete from book where id = #{id}
+		</delete>
+		<!-- parameterType="java.lang.String" -->
+		<select id="like"  resultType="com.easy.model.Book">
+		select id,bookname,author,press,to_char(presdate,'yyyy-mm-dd') presdate from book where bookname like #{bookname}<!-- '%${value}%' -->
+		</select>
+</mapper>
